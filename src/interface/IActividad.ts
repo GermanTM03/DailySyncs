@@ -1,5 +1,5 @@
 export default interface IActividad {
-    ID: number;
+    IDA: number;
     UsuarioID: Number;
     Descripcion: string;
     Importancia: number;
