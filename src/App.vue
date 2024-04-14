@@ -1,37 +1,72 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink,  RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue';
 
+
+const isLoading = ref(true);
+
+onMounted(() => {
+  // Simular una carga inicial (puedes cambiar esto según tus necesidades)
+  setTimeout(() => {
+    isLoading.value = false; // Cambiar el estado para indicar que la carga ha finalizado
+  }, 2000); // Simulación de una carga de 2 segundos
+});
 </script>
 
 <template>
-  <header class="main-header">
+  <!-- Pantalla de carga -->
+  <div v-if="isLoading" class="loading-screen">
+    <div >
+      <img src="./assets/img/Logo_DailySync_carga.png" alt="Cargando...">
+      <div class="spinner"></div>
+    </div>
+  </div>
 
-    <nav class="nav-links">
-      <RouterLink to="/" class="nav-link">Home</RouterLink>
-      <RouterLink to="/about" class="nav-link">About</RouterLink>
-      <RouterLink to="/User" class="nav-link">Usuario</RouterLink>
-      <RouterLink to="/Vista" class="nav-link">Registro</RouterLink>
-      <RouterLink to="/Login" class="nav-link">Login:D</RouterLink>
-      
-    </nav>
-  </header>
+  <!-- Contenido de la aplicación -->
+  <div v-else>
+    <header class="main-header">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="./assets/img/Logo.png" alt="Logo">
+        <div class="logo-text">DayliSync</div>
+      </div>
 
-  <RouterView />
+      <!-- Navegación --> 
+      <nav class="nav-links">
+        <RouterLink to="/Login" class="nav-link">Login:D</RouterLink>
+        <RouterLink to="/Settings" class="nav-link">Setting</RouterLink>
+      </nav>
+      <!-- Navegación -->
+      <!--
+      <nav class="nav-links">
+        <RouterLink to="/" class="nav-link">Home</RouterLink>
+        <RouterLink to="/about" class="nav-link">About</RouterLink>
+        <RouterLink to="/User" class="nav-link">Usuario</RouterLink>
+        <RouterLink to="/Vista" class="nav-link">Registro</RouterLink>
+        <RouterLink to="/Login" class="nav-link">Login:D</RouterLink>
+      </nav>
+      -->
+    </header>
+
+    <RouterView />
+  </div>
+
+  
 </template>
 
 <style scoped>
 /* Estilos generales */
 .main-header {
-  background-color: #98ffe59f;
-  color: rgb(0, 0, 0);
+  background-color: #B799FF; /* Cambia el color de fondo */
+  color: #fff; /* Cambia el color del texto */
   display: flex;
   align-items: center;
   padding: 1rem;
 }
 
 .logo img {
-  width: 50px; /* Ajusta el tamaño del logo según sea necesario */
-  margin-right: 1rem; /* Espacio entre el logo y los enlaces */
+  width: 50px;
+  margin-right: 1rem;
 }
 
 .nav-links {
@@ -40,20 +75,43 @@ import { RouterLink, RouterView } from 'vue-router'
 }
 
 .nav-link {
-  margin-left: 5rem;
-  color: rgb(0, 0, 0);
+  margin-left: 1rem;
+  color: #fff;
   text-decoration: none;
-  margin-right: 14rem; /* Espacio entre los enlaces */
-  font-size: 1.2rem; /* Tamaño de fuente de los enlaces */
+  font-size: 1.2rem;
 }
 
 .nav-link:hover {
-  text-decoration: underline; /* Subraya los enlaces al pasar el mouse */
+  text-decoration: underline;
 }
 
-/* Estilos del contenedor principal */
-.ContenedorRender {
+/* Estilos para la pantalla de carga */
+.loading-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  margin: 0;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  left: 75px;
+  border-radius: 50%;
+  border: 4px solid #ccc;
+  border-top-color: #3559fa;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
