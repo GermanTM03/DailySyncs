@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import './base.css';
 
 #app {
@@ -33,3 +34,18 @@ a,
     padding: 0 2rem;
   }
 }
+=======
+#app {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    /* Otros estilos necesarios */
+  }
+  html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+>>>>>>> f2e928cd6ac19776431e30b3056470826a49e716

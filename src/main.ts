@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
+<<<<<<< HEAD
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 
@@ -13,3 +14,10 @@ app.use(VueSweetalert2).mount('#app')
 app.use(router)
 
 
+=======
+const app = createApp(App)
+
+app.use(router)
+
+app.mount('#app')
+>>>>>>> f2e928cd6ac19776431e30b3056470826a49e716
