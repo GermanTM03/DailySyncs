@@ -5,24 +5,10 @@ const router = createRouter({
   routes: [
 
     {
-      path: '/about',
-      name: 'about',
+      path: '/Home',
+      name: 'home',
 
-      component: () => import('../views/AboutView.vue')
-    },
-
-    {
-      path: '/Vista',
-      name: 'Vista',
-
-      component: () => import('../views/ActividadesView.vue')
-    },
-    {
-      path: '/Act/:id',
-      name: 'Act',
-
-      component: () => import('../views/ActividadView.vue'),
-      props: true
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/Login',
@@ -37,11 +23,38 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue')
     },
     {
+      path: '/AddAct',
+      name: 'AddAct',
+
+      component: () => import('../views/AddActivityView.vue')
+    },
+
+    {
+      path: '/DetailsActivities',
+      name: 'DetailsActivities',
+
+      component: () => import('../views/DetailsActivitiesView.vue')
+    },
+    {
+      path: '/MyActivities/',
+      name: 'MyActivities',
+
+      component: () => import('../views/MyActivitiesView.vue'),
+      props: true
+    },
+    {
+      path: '/MyPerfil',
+      name: 'MyPerfil',
+
+      component: () => import('../views/MyPerfilView.vue')
+    },
+
+    {
       path: '/User',
       name: 'User',
 
       component: () => import('../views/UserView.vue')
-    }
+    },
   ]
 })
 

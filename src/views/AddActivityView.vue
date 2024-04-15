@@ -1,7 +1,7 @@
 <template>
     <div class="Cuerpo">
-      <div class="InicioSesion">
-        <img src="../assets/icons/Icon_principal.png" alt="" />
+      <div class="Agregar-act">
+        <img src="../assets/img/Logo.png" alt="" />
         <div class="Formulario">
           <form @submit.prevent="registerAct">
             <div class="input_box">
@@ -35,7 +35,7 @@
               <input type="date" id="fechaTermino" v-model="fechaTermino" required />
               <i class="bx bx-calendar"></i>
             </div>
-            <button type="submit">Crear Actividad</button>
+            <button type="submit">Agregar Actividad</button>
           </form>
         </div>
       </div>
@@ -48,14 +48,21 @@
   
   <style scoped>
   /* Estilos para el formulario */
-  .InicioSesion {
+  .Agregar-act {
+    position: relative;
+    top: 60px;
     max-width: 400px; /* Ancho máximo del formulario */
     margin: 0 auto; /* Centrar el formulario horizontalmente */
     padding: 20px;
     background-color: #f4f4f4; /* Color de fondo del formulario */
     border-radius: 8px; /* Bordes redondeados */
   }
-  
+  img {
+    left: 175px;
+    position: relative;
+    width: 15%;
+    height: 15%;
+  }
   .Formulario {
     margin-top: 20px;
   }

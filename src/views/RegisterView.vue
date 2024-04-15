@@ -1,7 +1,8 @@
+<!---- Estilo terminado ----->
 <template>
    <body>
     <div class="Cuerpo">
-      <div class="InicioSesion">
+      <div class="Registro">
         <img src="../assets/img/Logo.png" alt="" />
         <div class="Formulario">
           <div v-if="user">
@@ -85,13 +86,14 @@
   </script>
   
   <style scoped>
-
+/*--Estilo del fondo registro--*/
 body{
    background-image: url(../assets/img/Fondo_Login.png);
    background-repeat: no-repeat;
    background: cover;
    background-size: cover
 }
+/*--Estilo del conteneador del Login--*/
   .Cuerpo {
     margin: 0;
     width: 100%;
@@ -100,8 +102,11 @@ body{
     justify-content: center;
     align-items: center;
   }
-  
-  .InicioSesion {
+/*--Estilo del fondo de la tarjeta del registro--*/
+  .Registro {
+    
+    position: relative;
+    top: 40px;
     margin-top: -10%;
     border-radius: 1rem;
     background-color: aliceblue;
@@ -111,14 +116,18 @@ body{
     flex-direction: column;
     align-items: center;
   }
-  .InicioSesion img {
+/*--Estilo de la img usado en la tarjeta del registro--*/   
+
+  .Registro img {
     width: 10%;
     height: 10%;
   }
-  
+/*--Estilos del formulario registro--*/
   .Formulario {
+    
     width: 100%;
     text-align: center;
+    
   }
   .Formulario button {
     background-color: rebeccapurple;

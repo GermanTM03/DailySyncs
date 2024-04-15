@@ -3,9 +3,9 @@
 	  <div class="menu">
 		<!-- Botón para abrir/cerrar el sidebar -->
 		<button @click="toggleSidebar" class="toggle-sidebar">&#9776;</button>
-		<router-link to="/">Home</router-link>
-		<router-link to="/about">About</router-link>
-		<router-link to="/settings">Settings</router-link>
+
+		<router-link to="/MyActivities">Mis actividades</router-link>
+	
 	  </div>
 	</aside>
   </template>
@@ -24,9 +24,9 @@
   aside {
 	width: 200px;
 	height: 100%;
-	background-color: #333;
+	background-color: #01104e;
 	color: white;
-	position: fixed;
+	position: absolute;
 	top: 94px; 
 	left: 0;
 	transition: transform 0.3s ease;

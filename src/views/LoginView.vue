@@ -1,3 +1,4 @@
+<!---- Estilo terminado ----->
 <template  >
  <body> 
   <div>
@@ -74,12 +75,14 @@ if (tokenFromStorage && IDFromStorage) {
 </script>
 
 <style scoped>
+/*--Estilo del fondo Login--*/
 body{
    background-image: url(../assets/img/Fondo_Login.png);
    background-repeat: no-repeat;
    background: cover;
    background-size: cover
 }
+/*--Estilo del conteneador del Login--*/
 .Cuerpo {
   margin: 0;
   width: 100%;
@@ -88,7 +91,7 @@ body{
   justify-content: center;
   align-items: center;
 }
-
+/*--Estilo del fondo de la tarjeta del login--*/
 .InicioSesion {
   margin-top: -10%;
   border-radius: 1rem;
@@ -99,11 +102,12 @@ body{
   flex-direction: column;
   align-items: center;
 }
+/*--Estilo de la img usado en la tarjeta del login--*/
 .InicioSesion img {
   width: 15%;
   height: 15%;
 }
-
+/*--Estilos del formulario Login--*/
 .Formulario {
   width: 100%;
   text-align: center;

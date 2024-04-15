@@ -4,8 +4,6 @@ import { ref, onMounted } from 'vue';
 import Sidebar from '@/components/Sidebar.vue'; // Asegúrate de tener la ruta correcta
 
 
-
-
 const isLoading = ref(true);
 
 onMounted(() => {
@@ -36,8 +34,11 @@ onMounted(() => {
       <!-- Navegación --> 
       <nav class="nav-links">
         <RouterLink to="/Login" class="nav-link">Login:D</RouterLink>
-        <RouterLink to="/Settings" class="nav-link">Setting</RouterLink>
+        <RouterLink to="/Home" class="nav-link">home</RouterLink>
+        <RouterLink to="/MyPerfil" class="nav-link">Perfil</RouterLink>
+
       </nav>
+      
       <!-- Navegación -->
       <!--
       <nav class="nav-links">
@@ -66,6 +67,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 1rem;
+  
+ 
 }
 
 .logo img {
