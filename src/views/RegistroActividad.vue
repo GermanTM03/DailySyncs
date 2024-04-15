@@ -2,10 +2,6 @@
   <header class="Moradito">
     
   </header>
-  <div class="Cuerpo"></div>
-    <div class="user-panel">
-<UsuarioView/>
-    </div>
 
 
 
