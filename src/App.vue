@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { RouterLink,  RouterView } from 'vue-router'
 import { ref, onMounted } from 'vue';
+import Sidebar from '@/components/Sidebar.vue'; // Asegúrate de tener la ruta correcta
+
+
 
 
 const isLoading = ref(true);
@@ -30,7 +33,6 @@ onMounted(() => {
         <img src="./assets/img/Logo.png" alt="Logo">
         <div class="logo-text">DayliSync</div>
       </div>
-
       <!-- Navegación --> 
       <nav class="nav-links">
         <RouterLink to="/Login" class="nav-link">Login:D</RouterLink>
@@ -49,6 +51,7 @@ onMounted(() => {
     </header>
 
     <RouterView />
+    <Sidebar />
   </div>
 
   
@@ -56,6 +59,7 @@ onMounted(() => {
 
 <style scoped>
 /* Estilos generales */
+
 .main-header {
   background-color: #B799FF; /* Cambia el color de fondo */
   color: #fff; /* Cambia el color del texto */
@@ -68,7 +72,11 @@ onMounted(() => {
   width: 50px;
   margin-right: 1rem;
 }
-
+.logo-text{
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+}
 .nav-links {
   display: flex;
   align-items: center;
@@ -114,4 +122,5 @@ onMounted(() => {
     transform: rotate(360deg);
   }
 }
+
 </style>

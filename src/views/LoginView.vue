@@ -1,6 +1,8 @@
 <template  >
  <body> 
-  <div class="Cuerpo">
+  <div>
+    <Sidebar />
+    <div class="Cuerpo">
     <div class="InicioSesion">
       <img src="../assets/img/Logo.png" alt="" />
       <div class="Formulario">
@@ -26,12 +28,16 @@
       </div>
     </div>
   </div>
+  </div>
 </body>
+  
+
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import authServices from '@/services/AuthServices';
+import Sidebar from '@/components/Sidebar.vue';
 
 const correo = ref('');
 const contraseña = ref('');
