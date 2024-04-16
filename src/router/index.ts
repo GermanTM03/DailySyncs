@@ -5,7 +5,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/Home',
+      path: '/',
       name: 'Home',
       component: HomeView
     },
@@ -36,6 +36,15 @@ const router = createRouter({
       meta: { requiresDirectAccess: true }, // Esta meta indica que la ruta requiere acceso directo
 
       component: () => import('../views/DetallesActividad.vue'),
+      props: true
+    },
+    {
+      path: '/ActUser',
+      
+      name: 'ActUser',
+      meta: { requiresDirectAccess: true }, // Esta meta indica que la ruta requiere acceso directo
+
+      component: () => import('../views/EditarUserView.vue'),
       props: true
     },
     {

@@ -11,9 +11,9 @@
     <!-- Panel de actividades -->
     <div class="activities-panel">
       <div class="Agregar">
-        <a href="/Agregar">
+        <a :href="token ? '/Agregar' : '/login'">
           <div class="contenedoragregar">
-            <p>Agrega Una Actividad</p>
+            <p>{{ token ? 'Agrega Una Actividad' : 'Inicia sesión para agregar una actividad' }}</p>
           </div>
         </a>
       </div>
@@ -143,7 +143,7 @@ const redirect = (IDA: number, UsuarioID: number) => {
 
 <style scoped>
 .cabeza{
-  background-color: blueviolet;
+  background-color: #B799FF;
   width: 100%;
   height: 50px;
 }
@@ -249,7 +249,6 @@ text-decoration: none;
 .user-panel {
   width: 20%;
   margin: 0;
-  background-color: rgb(74, 23, 192);
   
 }
 

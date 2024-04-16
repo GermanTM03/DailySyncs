@@ -56,7 +56,7 @@ const login = async () => {
     localStorage.setItem('token', authToken);
     localStorage.setItem('IDU', String(userId));
     showLoginSuccess();
-    router.push('/Home');
+    router.push('/');
   } catch (error) {
     showErrorAlert();
 

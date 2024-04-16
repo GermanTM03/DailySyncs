@@ -1,34 +1,24 @@
 <template>
-  <header class="Moradito">
-    
-  </header>
-
-
-
-
-
-
-
-
-
-  <div class="Cuerpo">
-    <div class="InicioSesion">
-      <img src="../assets/icons/Icon_principal.png" alt="" />
-      <div class="Formulario">
-        <form @submit.prevent="registerAct">
-          <div class="input_box">
-            <input type="text" id="titulo" v-model="titulo" placeholder="Título" required />
-            <i class="bx bx-user"></i>
-          </div>
-          <div class="input_box">
-            <textarea
-              id="descripcion"
-              v-model="descripcion"
-              placeholder="Descripción"
-              required
-            ></textarea>
-            <i class="bx bx-user"></i>
-          </div>
+  <header class="nav"></header>
+  <div class="Contenedor">
+    <div class="User">
+      <User />
+    </div>
+    <div class="add">
+      <h3>NUEVA ACTIVIDAD</h3>
+      <form @submit.prevent="registerAct" >
+        <div class="inputbox">
+          <label for="">Titulo:</label>
+          <input type="text" id="titulo" v-model="titulo" required />
+        </div>
+        <div class="inputbox">
+          <label for="">Descripcion:</label>
+          <input type="text" id="descripcion" v-model="descripcion" required />
+        </div>
+        <div class="Labell">
+          <label for=""> Importancia:</label>
+        </div>
+        <div class="input_container">
           <div class="input_box">
             <label>
               <input type="radio" name="importancia" value="1" v-model="importancia" />
@@ -47,24 +37,33 @@
               Nada importante
             </label>
           </div>
+        </div>
 
-          <div class="input_box">
-            <input type="date" id="fechaTermino" v-model="fechaTermino" required />
+        <div class="FechaTerminoContainer">
+          <label for="fechaTermino">Fecha de término:</label>
+          <div class="FechaAct">
+            <input
+              type="date"
+              id="fechaTermino"
+              required
+              class="styled-date-input"
+              v-model="fechaTermino"
+            />
             <i class="bx bx-calendar"></i>
           </div>
-          <button type="submit">Crear Actividad</button>
-        </form>
-      </div>
+        </div>
+
+        <button type="submit">Crear Actividad</button>
+      </form>
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
+import User from './Usuario.vue'
 import { ref, onMounted } from 'vue'
 import UserService from '@/services/AuthServices'
 import type IActividad from '@/Interface/IActividad'
 import { useRouter } from 'vue-router'
-import UsuarioView from './Usuario.vue'
 
 const token = ref<string>('')
 const IDU = ref<number>(0)
@@ -108,7 +107,7 @@ async function registerAct() {
     }
 
     const newAct: IActividad = {
-      ID: 0, 
+      ID: 0,
       UsuarioID: usuarioID.value,
       Descripcion: descripcion.value,
       Importancia: importancia.value,
@@ -118,7 +117,6 @@ async function registerAct() {
     }
 
     act.value = await UserService.registerAct(newAct)
-
 
     titulo.value = ''
     descripcion.value = ''
@@ -131,64 +129,129 @@ async function registerAct() {
 </script>
 
 <style scoped>
-.InicioSesion {
-  max-width: 400px;
-  margin: 0 auto; 
-  padding: 20px;
-  background-color: #f4f4f4; 
-  border-radius: 8px;
+.User {
+  width: 20%;
+  background-color: rgb(129, 141, 141);
+  height: 400px;
 }
-
-.Formulario {
-  margin-top: 20px;
+.nav {
+  width: 100%;
+  height: 50px;
+  background-color: #b799ff;
+}
+.Contenedor {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+.add {
+  width: 50%;
+  margin-left: 10%;
+  height: auto;
+  background-color: aliceblue;
+}
+.add h3 {
+  font-size: 25px;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+.inputbox {
+  width: 100%;
+  height: auto;
+}
+.inputbox {
+  width: 100%;
+  height: auto;
+  display: grid;
+  margin-top: 2%;
+  height: auto;
+  margin-left: 5%;
+}
+.inputbox input {
+  width: 80%;
+  height: 40px;
+  border-radius: 1rem;
+  border: none;
+  background-color: #aee2ff;
+}
+.inputbox label {
+  font-size: 20px;
+}
+.Contenedor label {
+  font-size: 20px;
+}
+.Labell {
+  margin-left: 5%;
+  margin-top: 2%;
+}
+.input_box {
+  width: 100%;
+  display: flex;
+  height: 50%;
+  margin-top: 2%;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-size: 15px;
+}
+.input_container {
+  display: flex;
+  height: 60px;
 }
 
 .input_box {
+  margin-right: 10px;
+}
+.styled-date-input {
+  appearance: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  outline: none;
+  margin-left: 5%;
+}
+
+.bx-calendar {
   position: relative;
+  left: -30px;
+  top: 6px;
+  color: #555;
+}
+
+.FechaAct {
+  position: relative;
+}
+
+.FechaAct i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.FechaTerminoContainer {
   margin-bottom: 20px;
 }
 
-.input_box input,
-.input_box textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc; /* Borde del campo de entrada */
-  border-radius: 5px; /* Bordes redondeados del campo de entrada */
+.FechaTerminoContainer label {
+  display: block;
+  margin-bottom: 5px;
+  margin-left: 5%;
 }
-
-.input_box textarea {
-  resize: none; /* Evitar que el usuario pueda redimensionar el área de texto */
-}
-
-.input_box i {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  color: #888; /* Color del ícono */
-}
-
-button[type='submit'] {
-  width: 100%;
-  padding: 10px;
+.Contenedor button {
+  width: 20%;
+  height: 30px;
+  margin-top: 5%;
+  margin-left: 1%;
+  margin-bottom: 10%;
+  border-radius: 2rem;
+  background-color: #6e85b7;
   border: none;
-  border-radius: 5px;
-  background-color: #007bff; /* Color de fondo del botón */
-  color: #fff; /* Color del texto del botón */
+  color: white;
   cursor: pointer;
 }
-
-button[type='submit']:hover {
-  background-color: #0056b3; /* Cambiar el color de fondo al pasar el cursor sobre el botón */
-}
-.user-panel {
-  width: 20%;
-  margin: 0;
-  background-color: rgb(74, 23, 192);
-  
-}
-
-.user-panel h2, .activities-panel h2 {
-  margin-bottom: 10px;
+.Contenedor button:hover {
+  background-color: #9aaacc;
+  color: black;
 }
 </style>

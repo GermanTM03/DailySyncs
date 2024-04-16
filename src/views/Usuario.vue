@@ -6,7 +6,6 @@
         <img src="../assets/usuario.png" alt="Usuario" />
       </div>
       <div v-if="users.length === 0">
-        <!-- Si no hay usuarios, mostrar un nombre y correo predeterminados -->
         <p>Nombre de Usuario</p>
         <p>correo@correo.com</p>
       </div>
@@ -20,7 +19,6 @@
       <div class="dropdown">
         <button class="dropbtn">Opciones</button>
         <div class="dropdown-content">
-          <a v-if="token" href="">Editar Perfil</a>
           <a v-if="token" @click="logout">Cerrar Sesión</a>
           <router-link v-else to="/Login">Iniciar Sesión</router-link>
         </div>
@@ -150,11 +148,12 @@ const logout = () => {
 }
 
 .dropbtn {
-  background-color: #4caf50;
-  color: white;
-  padding: 16px;
+  background-color: #0988ff;
+  color: rgb(255, 255, 255);
+  padding: 10px;
   font-size: 16px;
   border: none;
   cursor: pointer;
+  border-radius: 1rem;
 }
 </style>

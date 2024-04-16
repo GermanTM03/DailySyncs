@@ -1,182 +1,117 @@
 <template>
-
-
-
-
-
-
-
-
-
-
-
-    <div class="Cuerpo">
-      <div class="InicioSesion">
-        <img src="../assets/icons/Icon_principal.png" alt="" />
-        <div class="Formulario">
-          <form @submit.prevent="registerAct">
-            <div class="input_box">
-              <input type="text" id="titulo" v-model="titulo" placeholder="Título" required />
-              <i class="bx bx-user"></i>
-            </div>
-            <div class="input_box">
-              <textarea
-                id="descripcion"
-                v-model="descripcion"
-                placeholder="Descripción"
-                required
-              ></textarea>
-              <i class="bx bx-user"></i>
-            </div>
-            <div class="input_box">
-              <label>
-                <input type="radio" name="importancia" value="1" v-model="importancia" />
-                Muy importante
-              </label>
-            </div>
-            <div class="input_box">
-              <label>
-                <input type="radio" name="importancia" value="2" v-model="importancia" />
-                Poco importante
-              </label>
-            </div>
-            <div class="input_box">
-              <label>
-                <input type="radio" name="importancia" value="3" v-model="importancia" />
-                Nada importante
-              </label>
-            </div>
-  
-            <div class="input_box">
-              <input type="date" id="fechaTermino" v-model="fechaTermino" required />
-              <i class="bx bx-calendar"></i>
-            </div>
-            <button type="submit">Crear Actividad</button>
-          </form>
-        </div>
+  <button v-if="token" @click="logout">Cerrar sesión</button>
+  <div>
+    <div class="user-info">
+      <div class="info-box">
+        <h2>Respuesta:</h2>
+        <div v-if="IDU">{{ IDU }}</div>
       </div>
     </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
-  import UserService from '@/services/AuthServices'
-  import type IActividad from '@/Interface/IActividad'
-  import { useRouter } from 'vue-router'
-  const token = ref<string>('')
-  const IDU = ref<number>(0)
-  let titulo = ref('')
-  let descripcion = ref('')
-  let importancia = ref('1') // Inicializado con el valor predeterminado
-  let fechaTermino = ref('')
-  let usuarioID = ref(IDU) // Puedes obtener el ID del usuario desde la sesión o de donde corresponda
-  let act = ref<IActividad | null>(null)
-  
-  const router = useRouter()
-  onMounted(async () => {
-    const tokenFromStorage = localStorage.getItem('token')
-    const IDFromStorage = localStorage.getItem('IDU')
-  
-    if (tokenFromStorage && IDFromStorage) {
-      token.value = tokenFromStorage
-      IDU.value = parseInt(IDFromStorage)
-      console.log('IDU:', IDU.value)
-      console.log('Token:', token.value)
-  
-      try {
-        const actividades = await UserService.GetAct(IDU.value)
-        if (actividades && Array.isArray(actividades)) {
-          users.value = actividades
-          console.log('Obtencion de las actividades exitosa:', actividades)
-        } else {
-          console.error('No se encontraron actividades para el ID especificado.')
-        }
-      } catch (error) {
-        console.error('Error al obtener las actividades:', error)
-      }
-    } else {
-      console.warn('No hay token en el almacenamiento local. No se obtendrán actividades.')
-    }
-  })
-  async function registerAct() {
+    <h1>Los Usuarios:</h1>
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>IDU</th>
+          <th>Correo</th>
+          <th>USuario</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users" :key="user.ID">
+          <td>{{ user.FechaCreacion }}</td>
+          <td>{{ user.Correo }}</td>
+          <td>{{ user.Usuario }}</td>
+          <td>{{ user.Contraseña }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import UserService from '@/services/AuthServices'
+import type IUser from '@/Interface/IUser'
+
+const token = ref<string>('')
+const IDU = ref<number>(0)
+const users = ref<IUser[]>([])
+
+onMounted(async () => {
+  const tokenFromStorage = localStorage.getItem('token')
+  const IDUFromStorage = localStorage.getItem('IDU')
+
+  if (tokenFromStorage && IDUFromStorage) {
+    token.value = tokenFromStorage
+    IDU.value = parseInt(IDUFromStorage)
+
     try {
-      if (!titulo.value || !descripcion.value || !importancia.value || !fechaTermino.value) {
-        throw new Error('Todos los campos son obligatorios')
+      const usuario = await UserService.User(IDU.value)
+      if (usuario && Array.isArray(usuario)) {
+        users.value = usuario
+        console.log('Obtencion de las activIDUades exitosa:', usuario)
+      } else {
+        console.error('No se encontraron activIDUades para el IDU especificado.')
       }
-  
-      const newAct: IActividad = {
-        ID: 0, 
-        UsuarioID: usuarioID.value,
-        Descripcion: descripcion.value,
-        Importancia: importancia.value,
-        FechaTermino: new Date(fechaTermino.value),
-        FechaCreacion: new Date(),
-        Titulo: titulo.value
-      }
-  
-      act.value = await UserService.registerAct(newAct)
-  
-  
-      titulo.value = ''
-      descripcion.value = ''
-      importancia.value = 0
-      fechaTermino.value = ''
     } catch (error) {
-      console.error('No se pudo crear la actividad:', error)
+      console.error('Error al obtener las activIDUades:', error)
     }
+  } else {
+    console.warn('No hay token en el almacenamiento local. No se obtendrán activIDUades.')
   }
-  </script>
-  
-  <style scoped>
-  .InicioSesion {
-    max-width: 400px;
-    margin: 0 auto; 
-    padding: 20px;
-    background-color: #f4f4f4; 
-    border-radius: 8px;
-  }
-  
-  .Formulario {
-    margin-top: 20px;
-  }
-  
-  .input_box {
-    position: relative;
-    margin-bottom: 20px;
-  }
-  
-  .input_box input,
-  .input_box textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc; /* Borde del campo de entrada */
-    border-radius: 5px; /* Bordes redondeados del campo de entrada */
-  }
-  
-  .input_box textarea {
-    resize: none; /* Evitar que el usuario pueda redimensionar el área de texto */
-  }
-  
-  .input_box i {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: #888; /* Color del ícono */
-  }
-  
-  button[type='submit'] {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff; /* Color de fondo del botón */
-    color: #fff; /* Color del texto del botón */
-    cursor: pointer;
-  }
-  
-  button[type='submit']:hover {
-    background-color: #0056b3; /* Cambiar el color de fondo al pasar el cursor sobre el botón */
-  }
-  </style>
-  
+})
+const tokenFromStorage = localStorage.getItem('token');
+const IDFromStorage = localStorage.getItem('IDU');
+console.log('Token from storage:', tokenFromStorage);
+console.log('IDU from storage:', IDFromStorage); 
+
+const logout = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('IDU')
+  token.value = ''
+  IDU.value = 0
+  window.location.href = '/login'
+}
+</script>
+
+<style scoped>
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solIDU rgba(0, 0, 0, 0.2);
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.user-table th {
+  background-color: aliceblue;
+  color: #000;
+  text-align: left;
+}
+
+.user-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.info-box {
+  width: 48%;
+}
+
+.info-box h2 {
+  margin-bottom: 5px;
+}
+</style>

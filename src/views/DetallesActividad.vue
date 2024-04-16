@@ -1,37 +1,71 @@
 <template>
-  <div class="BOXA">
+  <header class="nav"></header>
+  <div class="Contenedor">
+    <div class="User">
+      <User />
+    </div>
+    <div class="add">
+      <h3>ACTUALIZAR</h3>
+      <form @submit.prevent="handleSubmit(actividad)" v-for="actividad in users" :key="actividad.IDA">
+        <div class="inputbox">
+          <label for="">Titulo:</label>
+          <input type="text" id="titulo" v-model="actividad.Titulo" :disabled="!actividad.editing" required />
+        </div>
+        <div class="inputbox">
+          <label for="">Descripcion:</label>
+          <input type="text" id="descripcion" v-model="actividad.Descripcion" :disabled="!actividad.editing" required />
+        </div>
+        <div class="Labell">
+          <label for=""> Importancia:</label>
+        </div>
+        <div class="input_container">
+          <div class="input_box">
+            <label>
+              <input type="radio" name="importancia" value="1" v-model="actividad.Importancia" :disabled="!actividad.editing" />
+              Muy importante
+            </label>
+          </div>
+          <div class="input_box">
+            <label>
+              <input type="radio" name="importancia" value="2" v-model="actividad.Importancia" :disabled="!actividad.editing" />
+              Poco importante
+            </label>
+          </div>
+          <div class="input_box">
+            <label>
+              <input type="radio" name="importancia" value="3" v-model="actividad.Importancia" :disabled="!actividad.editing" />
+              Nada importante
+            </label>
+          </div>
+        </div>
 
-    <button v-if="token" @click="logout">Cerrar sesión</button>
-    <div>
-      <div class="user-info">
-      </div>
-      <table class="user-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Titulo</th>
-            <th>Creador</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="actividad in users" :key="actividad.IDA">
-            <td>{{ actividad.IDA }}</td>
-            <td>{{ actividad.UsuarioID }}</td>
-            <td>{{ actividad.Descripcion }}</td>
-            <td>{{ actividad.FechaTermino }}</td>
-          </tr>
-        </tbody>
-      </table>
+        <div class="FechaTerminoContainer" >
+          <label for="fechaTermino">Fecha de término:</label>
+          <div class="FechaAct">
+            <a href="">{{ actividad.FechaTermino }}</a>
+            <input type="date" id="fechaTermino" required class="styled-date-input" v-model="actividad.FechaTermino" v-if="actividad.editing" />
+            <i class="bx bx-calendar"></i>
+          </div>
+          <label for="fechaTermino">Fecha de Creacion:</label>
+          <div class="FechaAct">
+            <a href="">{{ actividad.FechaCreacion }}</a>
+          </div>
+        </div>
+        
+        <button v-if="!actividad.editing" @click="actividad.editing = true">Editar</button>
+        <button type="submit">Guardar</button>
+      </form>
     </div>
   </div>
-  </template>
+</template>
+
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import UserService from '@/services/AuthServices'
 import type IActividad from '@/Interface/IActividad'
 import { useRoute, useRouter } from 'vue-router'
+import User from './Usuario.vue'
 
 const token = ref<string>('')
 const ID = ref<number>(0)
@@ -82,59 +116,142 @@ onMounted(async () => {
   }
 })
 
-const logout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('ID')
-  token.value = ''
-  ID.value = 0
-  window.location.href = '/login'
+const handleSubmit = async (actividad: IActividad) => {
+  try {
+    await UserService.updateAct(actividad)
+  } catch (error) {
+    console.error('Error al actualizar la actividad:', error)
+  }
 }
+
 </script>
-
-
 <style scoped>
-.BOXA{
+.User {
+  width: 20%;
+  background-color: rgb(129, 141, 141);
+  height: 400px;
+}
+.nav {
   width: 100%;
-  height: 100vh;
-  background-color: rgba(255, 0, 0, 0.178);
+  height: 50px;
+  background-color: #b799ff;
 }
-.user-table {
+.Contenedor {
   width: 100%;
-  border-collapse: collapse;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.user-table th,
-.user-table td {
-  padding: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.user-table th {
-  background-color: aliceblue;
-  color: #000;
-  text-align: left;
-}
-
-.user-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.user-table tbody tr:hover {
-  background-color: #f2f2f2;
-}
-
-.user-info {
+  height: auto;
   display: flex;
-  justify-content: space-between;
+}
+.add {
+  width: 50%;
+  margin-left: 10%;
+  height: auto;
+  background-color: aliceblue;
+}
+.add h3 {
+  font-size: 25px;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+.inputbox {
+  width: 100%;
+  height: auto;
+}
+.inputbox {
+  width: 100%;
+  height: auto;
+  display: grid;
+  margin-top: 2%;
+  height: auto;
+  margin-left: 5%;
+}
+.inputbox input {
+  width: 80%;
+  height: 40px;
+  border-radius: 1rem;
+  border: none;
+  background-color: #aee2ff;
+}
+.inputbox label {
+  font-size: 20px;
+}
+.Contenedor label {
+  font-size: 20px;
+}
+.Labell {
+  margin-left: 5%;
+  margin-top: 2%;
+}
+.input_box {
+  width: 100%;
+  display: flex;
+  height: 50%;
+  margin-top: 2%;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-size: 15px;
+}
+.input_container {
+  display: flex;
+  height: 60px;
+}
+
+.input_box {
+  margin-right: 10px;
+}
+.styled-date-input {
+  appearance: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  outline: none;
+  
+  margin-left: 5%;
+}
+
+.bx-calendar {
+  position: relative;
+  left: -30px;
+  top: 6px;
+  color: #555;
+}
+
+.FechaAct {
+  position: relative;
+  margin-left: 10%;
+  text-decoration: none;
+}
+
+.FechaAct i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.FechaTerminoContainer {
   margin-bottom: 20px;
 }
 
-.info-box {
-  width: 48%;
-}
-
-.info-box h2 {
+.FechaTerminoContainer label {
+  display: block;
   margin-bottom: 5px;
+  margin-left: 5%;
+}
+.Contenedor button {
+  width: 20%;
+  height: 30px;
+  margin-top: 5%;
+  margin-left: 1%;
+  margin-bottom: 10%;
+  border-radius: 2rem;
+  background-color: #6e85b7;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.Contenedor button:hover {
+  background-color: #9aaacc;
+  color: black;
 }
 </style>

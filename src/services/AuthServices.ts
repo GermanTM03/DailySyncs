@@ -139,7 +139,7 @@ export default {
           confirmButtonText: 'Aceptar'
         }).then(() => {
           // Redirigir al usuario a la página de inicio de sesión
-          window.location.href = '/Home'; // Cambia '/Home' por la URL real de tu página de inicio
+          window.location.href = '/'; // Cambia '/Home' por la URL real de tu página de inicio
         });
       } else {
         throw new Error('No se pudo registrar la actividad');
@@ -181,7 +181,74 @@ export default {
       return [] // Retorna un array vacío en caso de error
     }
   },
-
+  
+  async updateAct(actividad: IActividad): Promise<void> {
+    try {
+      const response = await axios.put(`${API_URL}/Act/${actividad.IDA}`, actividad, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.status === 200) {
+        // Mostrar alerta de actualización exitosa
+        Swal.fire({
+          icon: 'success',
+          title: '¡Actualización exitosa!',
+          text: 'La actividad se ha actualizado correctamente.',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          // Redirigir al usuario a la página deseada
+          window.location.href = '/'; // Cambia '/Home' por la URL real de tu página deseada
+        });
+      } else {
+        throw new Error('No se pudo actualizar la actividad');
+      }
+    } catch (error) {
+      console.error(error);
+      // Mostrar alerta de error
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ha ocurrido un error al intentar actualizar la actividad.',
+        confirmButtonText: 'Aceptar'
+      });
+    }
+  },
+  async updateUser(actividad: IActividad): Promise<void> {
+    try {
+      const response = await axios.put(`${API_URL}/Act/${actividad.IDA}`, actividad, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.status === 200) {
+        // Mostrar alerta de actualización exitosa
+        Swal.fire({
+          icon: 'success',
+          title: '¡Actualización exitosa!',
+          text: 'La actividad se ha actualizado correctamente.',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          // Redirigir al usuario a la página deseada
+          window.location.href = '/'; // Cambia '/Home' por la URL real de tu página deseada
+        });
+      } else {
+        throw new Error('No se pudo actualizar la actividad');
+      }
+    } catch (error) {
+      console.error(error);
+      // Mostrar alerta de error
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ha ocurrido un error al intentar actualizar la actividad.',
+        confirmButtonText: 'Aceptar'
+      });
+    }
+  }
+  
 
 
 };
