@@ -1,111 +1,123 @@
 <template>
-  <div class="Formulario" v-for="user in users" :key="user.ID">
-    <form @submit.prevent="handleSubmit(user)">
-      <div class="Box_1">
-        <template v-if="!user.editing">{{ user.Usuario }}</template>
-        <input v-else v-model="user.Usuario" type="text" required />
-      </div>
-      <div class="Box_1">
-        <template v-if="!user.editing">{{ user.Correo }}</template>
-        <input v-else v-model="user.Correo" type="email" required />
-      </div>
-
-      <button v-if="!user.editing" @click="editUser(user)" :disabled="userIsEditing">Editar</button>
-      <template v-else>
-        <button @click="saveUser(user)">Guardar</button>
-        <button @click="cancelEdit(user)">Cancelar</button>
-      </template>
-    </form>
+  <header class="nav">
+    <div class="IMGHEADER">
+      <img src="../assets/Header.png" alt="Usuario" />
+    </div>
+  </header>
+  <div class="user-panel">
+    <UserView />
+  </div>
+  <div>
+    <div class="ContenedorAct">
+      <h2>Editar Usuario</h2>
+      <form @submit.prevent="editarUsuario">
+        <div class="Box_User">
+          <label for="nombre">Nombre de usuario:</label>
+          <input type="text" id="nombre" v-model="usuario.Usuario" placeholder="Nuevo Nombre" required >
+          <button>Editar</button>
+        </div>
+        <div class="Box_User">
+          <label for="correo">Correo electrónico:</label>
+          <input type="email" id="correo" v-model="usuario.Correo" required>
+        </div>
+        <div v-if="cambiarContraseña" class="Contra">
+          <input type="password" id="nuevaContraseña" v-model="nuevaContraseña" placeholder="Nueva Contraseña" required>
+          <input type="password" id="confirmarContraseña" v-model="confirmarContraseña" placeholder="Confirmar Contraseña" required>
+          <span v-if="nuevaContraseña !== confirmarContraseña">Las contraseñas no coinciden</span>
+        </div>
+        <div>
+          <button type="button" @click="toggleContraseña">Cambiar Contraseña</button>
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import UserService from '@/services/AuthServices'
+import { ref, reactive, onMounted } from 'vue';
+import axios from 'axios';
 import type IUser from '@/Interface/IUser'
+import UserView from './Usuario.vue'
+import UserService from '@/services/AuthServices'
 
-const token = ref<string>('')
-const IDU = ref<number>(0)
-const users = ref<IUser[]>([])
+const token = ref<string>('');
+const IDU = ref<number>(0);
+const usuario = reactive<IUser>({
+  Usuario: '',
+  Correo: ''
+});
+const cambiarContraseña = ref(false);
+const nuevaContraseña = ref('');
+const confirmarContraseña = ref('');
+const apiUrl = 'https://apiexpress-8mwr.onrender.com'; // URL de tu API
 
 onMounted(async () => {
-  const tokenFromStorage = localStorage.getItem('token')
-  const IDUFromStorage = localStorage.getItem('IDU')
+  const tokenFromStorage = localStorage.getItem('token');
+  const IDFromStorage = localStorage.getItem('IDU');
 
-  if (tokenFromStorage && IDUFromStorage) {
-    token.value = tokenFromStorage
-    IDU.value = parseInt(IDUFromStorage)
-
+  if (tokenFromStorage && IDFromStorage) {
+    token.value = tokenFromStorage;
+    IDU.value = parseInt(IDFromStorage);
+    console.log('IDU:', IDU.value);
+    console.log('Token:', token.value);
     try {
-      const usuario = await UserService.User(IDU.value)
-      if (usuario && Array.isArray(usuario)) {
-        users.value = usuario.map((user) => ({ ...user, editing: false }))
-        console.log('Obtencion de las actividades exitosa:', usuario)
+      const usuarioResponse = await UserService.User(IDU.value);
+      if (usuarioResponse && Array.isArray(usuarioResponse) && usuarioResponse.length > 0) {
+        usuario.Usuario = usuarioResponse[0].Usuario;
+        usuario.Correo = usuarioResponse[0].Correo;
+        console.log('Obtencion del usuario exitosa:', usuarioResponse[0]);
       } else {
-        console.error('No se encontraron actividades para el IDU especificado.')
+        console.error('No se encontró el usuario para el ID especificado.');
       }
     } catch (error) {
-      console.error('Error al obtener las actividades:', error)
+      console.error('Error al obtener el usuario:', error);
     }
   } else {
-    console.warn('No hay token en el almacenamiento local. No se obtendrán actividades.')
+    console.warn('No hay token en el almacenamiento local. No se obtendrá el usuario.');
   }
-})
+});
 
-const logout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('IDU')
-  token.value = ''
-  IDU.value = 0
-  window.location.href = '/login'
-}
-
-const editUser = (user: IUser) => {
-  // Deshabilita la edición de otros usuarios mientras uno está en modo de edición
-  users.value.forEach((u) => {
-    if (u !== user) {
-      u.editing = false
-    }
-  })
-  user.editing = true
-}
-
-const cancelEdit = (user: IUser) => {
-  // Restaurar valores originales
-  // Recargar datos del servidor si es necesario
-  user.editing = false
-}
-
-const saveUser = async (user: IUser) => {
+const editarUsuario = async () => {
   try {
-    const { ID, Usuario, Correo } = user;
-    await UserService.updateUser(ID, { Usuario, Correo }); // Solo enviar Usuario y Correo
-    user.editing = false;
+    const { Usuario, Correo } = usuario;
+    let datosUsuario = { Usuario, Correo };
+
+    if (cambiarContraseña.value && nuevaContraseña.value === confirmarContraseña.value) {
+      datosUsuario.Contraseña = nuevaContraseña.value;
+    }
+
+    await axios.put(`${apiUrl}/usuarios/${IDU.value}`, datosUsuario);
+    alert('Usuario actualizado exitosamente');
   } catch (error) {
     console.error('Error al actualizar usuario:', error);
+    alert('Error al actualizar usuario');
   }
 };
 
-
-const handleSubmit = async (user: IUser) => {
-  try {
-    const IDUFromStorage = localStorage.getItem('IDU')
-    if (!IDUFromStorage) {
-      throw new Error('No se encontró el IDU en el almacenamiento local')
-    }
-    const userID = parseInt(IDUFromStorage)
-
-    await UserService.updateUser(userID, user) // Pasar el ID del usuario al servicio
-    user.editing = false
-  } catch (error) {
-    console.error('Error al actualizar la actividad:', error)
+const toggleContraseña = () => {
+  cambiarContraseña.value = !cambiarContraseña.value;
+  if (!cambiarContraseña.value) {
+    nuevaContraseña.value = '';
+    confirmarContraseña.value = '';
   }
-}
-
-// Comprueba si algún usuario está en modo de edición
-const userIsEditing = computed(() => users.value.some((user) => user.editing))
+};
 </script>
 
-
-
+<style scoped>
+.Box_User{
+  width: 100%;
+  background-color: aqua;
+  margin-top: 2%;
+}
+.ContenedorAct{
+  width: 45%;
+  margin-top: 5%;
+  margin-left: 20%;
+}
+.Contra{
+  width: 100%;
+  display: grid;
+  background-color: blue;
+}
+</style>

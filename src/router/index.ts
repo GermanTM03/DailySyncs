@@ -30,6 +30,12 @@ const router = createRouter({
       component: () => import('../views/RegistroActividad.vue')
     },
     {
+      path: '/TuCalendario',
+      name: 'Calendaio',
+
+      component: () => import('../views/CalendarioView.vue')
+    },
+    {
       path: '/Act/:id',
       
       name: 'Act',

@@ -48,15 +48,24 @@ const setCurrentComponent = () => {
 
 <style scoped>
 /* Estilos para el spinner de carga */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .spinner {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 4px solid #ccc;
-  border-top-color: #3559fa;
-  margin-left: auto;
-  margin-right: auto;
-  animation: spin 0.8s linear infinite;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid #ccc;
+    border-top-color: #3559fa;
+    margin-left: auto;
+    margin-right: auto;
+    animation: spin 0.8s linear infinite;
 }
 
 .Box_Loading {

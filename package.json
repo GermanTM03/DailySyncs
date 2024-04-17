@@ -13,9 +13,14 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
     "axios": "^1.6.8",
     "sweetalert2": "^11.10.7",
     "vue": "^3.4.21",
+    "vue-cal": "^4.8.1",
+    "vue-full-calendar": "^2.8.1-0",
     "vue-router": "^4.3.0",
     "vue-sweetalert2": "^5.0.5"
   },

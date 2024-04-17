@@ -1,19 +1,39 @@
 <template>
-  <header class="nav"></header>
+  <header class="nav">
+    <div class="IMGHEADER">
+      <img src="../assets/Header.png" alt="Usuario" />
+    </div>
+  </header>
   <div class="Contenedor">
-    <div class="User">
+    <div class="user-panel">
       <User />
     </div>
     <div class="add">
-      <h3>ACTUALIZAR</h3>
-      <form @submit.prevent="handleSubmit(actividad)" v-for="actividad in users" :key="actividad.IDA">
+      <h3>Tu Actividad</h3>
+      <form
+        @submit.prevent="handleSubmit(actividad)"
+        v-for="actividad in users"
+        :key="actividad.IDA"
+      >
         <div class="inputbox">
           <label for="">Titulo:</label>
-          <input type="text" id="titulo" v-model="actividad.Titulo" :disabled="!actividad.editing" required />
+          <input
+            type="text"
+            id="titulo"
+            v-model="actividad.Titulo"
+            :disabled="!actividad.editing"
+            required
+          />
         </div>
         <div class="inputbox">
           <label for="">Descripcion:</label>
-          <input type="text" id="descripcion" v-model="actividad.Descripcion" :disabled="!actividad.editing" required />
+          <input
+            type="text"
+            id="descripcion"
+            v-model="actividad.Descripcion"
+            :disabled="!actividad.editing"
+            required
+          />
         </div>
         <div class="Labell">
           <label for=""> Importancia:</label>
@@ -21,29 +41,54 @@
         <div class="input_container">
           <div class="input_box">
             <label>
-              <input type="radio" name="importancia" value="1" v-model="actividad.Importancia" :disabled="!actividad.editing" />
+              <input
+                type="radio"
+                name="importancia"
+                value="1"
+                v-model="actividad.Importancia"
+                :disabled="!actividad.editing"
+              />
               Muy importante
             </label>
           </div>
           <div class="input_box">
             <label>
-              <input type="radio" name="importancia" value="2" v-model="actividad.Importancia" :disabled="!actividad.editing" />
+              <input
+                type="radio"
+                name="importancia"
+                value="2"
+                v-model="actividad.Importancia"
+                :disabled="!actividad.editing"
+              />
               Poco importante
             </label>
           </div>
           <div class="input_box">
             <label>
-              <input type="radio" name="importancia" value="3" v-model="actividad.Importancia" :disabled="!actividad.editing" />
+              <input
+                type="radio"
+                name="importancia"
+                value="3"
+                v-model="actividad.Importancia"
+                :disabled="!actividad.editing"
+              />
               Nada importante
             </label>
           </div>
         </div>
 
-        <div class="FechaTerminoContainer" >
+        <div class="FechaTerminoContainer">
           <label for="fechaTermino">Fecha de término:</label>
           <div class="FechaAct">
             <a href="">{{ actividad.FechaTermino }}</a>
-            <input type="date" id="fechaTermino" required class="styled-date-input" v-model="actividad.FechaTermino" v-if="actividad.editing" />
+            <input
+              type="date"
+              id="fechaTermino"
+              required
+              class="styled-date-input"
+              v-model="actividad.FechaTermino"
+              v-if="actividad.editing"
+            />
             <i class="bx bx-calendar"></i>
           </div>
           <label for="fechaTermino">Fecha de Creacion:</label>
@@ -51,14 +96,29 @@
             <a href="">{{ actividad.FechaCreacion }}</a>
           </div>
         </div>
-        
-        <button v-if="!actividad.editing" @click="actividad.editing = true">Editar</button>
-        <button type="submit">Guardar</button>
+
+        <button
+          style="background-color: blue"
+          v-if="!actividad.editing"
+          @click="actividad.editing = true"
+        >
+          Editar
+        </button>
+
+        <button
+          style="background-color: red"
+          type="button"
+          @click="cancelEdit(actividad)"
+          v-if="actividad.editing"
+        >
+          Cancelar
+        </button>
+
+        <button style="background-color: purple" type="submit">Guardar</button>
       </form>
     </div>
   </div>
 </template>
-
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
@@ -93,14 +153,22 @@ onMounted(async () => {
         if (actividades && Array.isArray(actividades)) {
           users.value = actividades
           console.log('Obtencion de las actividades exitosa:', actividades)
-          
-          // Verificar si el UsuarioID coincide con el IDU
-          if (actividades.some(actividad => actividad.UsuarioID !== IDU.value)) {
+
+          if (!actividades || actividades.length === 0) {
+            console.error('No se encontraron actividades para el ID especificado.')
+            // Redirigir a la página de error
+            router.push('/error')
+            return // Salir de la función
+          }
+
+          // Almacenar actividades y verificar cada actividad
+          users.value = actividades
+          console.log('Obtención de las actividades exitosa:', actividades)
+
+          if (actividades.some((actividad) => actividad.UsuarioID !== IDU.value)) {
             console.error('El UsuarioID no coincide con el IDU.')
             // Redireccionar a otra página
             router.push('/error')
-            // O puedes mostrar un mensaje de error y limpiar el localStorage para cerrar sesión
-            // logout()
           }
         } else {
           console.error('No se encontraron actividades para el ID especificado.')
@@ -115,7 +183,9 @@ onMounted(async () => {
     console.warn('No hay token en el almacenamiento local. No se obtendrán actividades.')
   }
 })
-
+const cancelEdit = (actividad: IActividad) => {
+  actividad.editing = false
+}
 const handleSubmit = async (actividad: IActividad) => {
   try {
     await UserService.updateAct(actividad)
@@ -123,7 +193,6 @@ const handleSubmit = async (actividad: IActividad) => {
     console.error('Error al actualizar la actividad:', error)
   }
 }
-
 </script>
 <style scoped>
 .User {
@@ -140,6 +209,7 @@ const handleSubmit = async (actividad: IActividad) => {
   width: 100%;
   height: auto;
   display: flex;
+  margin-top: 5%;
 }
 .add {
   width: 50%;
@@ -206,7 +276,7 @@ const handleSubmit = async (actividad: IActividad) => {
   padding: 8px 12px;
   font-size: 16px;
   outline: none;
-  
+
   margin-left: 5%;
 }
 
@@ -253,5 +323,16 @@ const handleSubmit = async (actividad: IActividad) => {
 .Contenedor button:hover {
   background-color: #9aaacc;
   color: black;
+
+  transition: 0.5s;
+}
+.editar-style button {
+  background-color: blue;
+  font-weight: bold;
+}
+
+.eliminar-style {
+  background-color: red;
+  font-weight: bold;
 }
 </style>

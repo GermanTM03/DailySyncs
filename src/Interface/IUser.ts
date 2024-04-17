@@ -4,7 +4,6 @@ export default interface IUser {
     Contraseña: string;
     Correo: string;
     FechaCreacion: Date;
-    NuevaContraseña?: string; // Campo opcional para la nueva contraseña
 
   }
   
