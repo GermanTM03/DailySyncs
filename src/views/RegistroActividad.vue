@@ -1,7 +1,12 @@
 <template>
-  <header class="nav"></header>
+  <header class="nav">
+    <div class="IMGHEADER">
+
+<img src="../assets/Header.png" alt="Usuario" />
+</div>
+  </header>
   <div class="Contenedor">
-    <div class="User">
+    <div class="user-panel">
       <User />
     </div>
     <div class="add">
@@ -53,7 +58,7 @@
           </div>
         </div>
 
-        <button type="submit">Crear Actividad</button>
+        <button style="background-color: blue;" type="submit">Crear Actividad</button>
       </form>
     </div>
   </div>
@@ -94,7 +99,7 @@ onMounted(async () => {
         console.error('No se encontraron actividades para el ID especificado.')
       }
     } catch (error) {
-      console.error('Error al obtener las actividades:', error)
+      console.error('Error no se pudo obtener las actividades:', error)
     }
   } else {
     console.warn('No hay token en el almacenamiento local. No se obtendrán actividades.')
@@ -143,6 +148,7 @@ async function registerAct() {
   width: 100%;
   height: auto;
   display: flex;
+  margin-top: 6%;
 }
 .add {
   width: 50%;
@@ -253,5 +259,7 @@ async function registerAct() {
 .Contenedor button:hover {
   background-color: #9aaacc;
   color: black;
+  transition: .5s;
+
 }
 </style>

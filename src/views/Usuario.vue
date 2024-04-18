@@ -17,12 +17,25 @@
         </div>
       </div>
       <div class="dropdown">
-        <button class="dropbtn">Opciones</button>
+        <button style="background-color: blue;" class="dropbtn">Opciones</button>
         <div class="dropdown-content">
+          <a v-if="token" href="/ActUser">VerPerfil</a>
           <a v-if="token" @click="logout">Cerrar Sesión</a>
           <router-link v-else to="/Login">Iniciar Sesión</router-link>
         </div>
       </div>
+      <div class="Acciones" v-if="token">
+    <div class="contexto">
+      <a href="/">
+        <font-awesome-icon icon="tasks" /> Actividades
+      </a>
+    </div>
+    <div class="contexto">
+      <a href="/TuCalendario">
+        <font-awesome-icon icon="calendar-alt" /> Calendario
+      </a>
+    </div>
+  </div>
     </div>
   </main>
 </template>
@@ -79,11 +92,14 @@ const logout = () => {
 }
 
 .user-panel {
-  width: 100%;
-  margin: 0;
+  width: 15%;
   text-align: center;
-  height: 400px;
+  height: 100%;
   background-color: #acbcff;
+  position: fixed; 
+  top: 0%;
+  left: 0; 
+  z-index: 1000; 
 }
 
 .contenedorimg img {
@@ -95,7 +111,7 @@ const logout = () => {
 }
 
 .contenedorimg img {
-  margin-top: 10%;
+  margin-top: 40%;
   width: 30%;
   border-radius: 100%;
   height: 10%;
@@ -155,5 +171,23 @@ const logout = () => {
   border: none;
   cursor: pointer;
   border-radius: 1rem;
+}
+.Acciones{
+  width: 100%;
+  
+  margin-top: 10%;
+}
+.contexto{
+  font-size: 25px;
+  margin-top: 20%;
+  text-decoration: none;
+}
+.contexto a{
+  text-decoration: none;
+  color: #000000;
+}
+.contexto a:hover{
+  transition: .2s;
+  color: #ffffff;
 }
 </style>
